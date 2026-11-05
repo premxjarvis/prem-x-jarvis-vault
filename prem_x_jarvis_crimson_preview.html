@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#090909">
+<title>PREM X JARVIS — Private Vault Preview</title>
+<style>
+:root{
+  --bg:#050505;--panel:#101010;--panel2:#171010;--red:#e32636;
+  --red2:#ff1744;--deep:#790018;--text:#f7f7f7;--muted:#aaa;
+  --line:rgba(255,35,65,.42);--glow:0 0 24px rgba(255,23,68,.24)
+}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(ellipse at 18% 20%,#31000c 0,transparent 36%),radial-gradient(ellipse at 85% 85%,#26000a 0,transparent 35%),var(--bg);color:var(--text);font-family:Inter,system-ui,Arial,sans-serif;min-height:100vh}
+button,input{font:inherit}
+.topbar{height:72px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 5%;background:rgba(5,5,5,.88);position:sticky;top:0;backdrop-filter:blur(12px);z-index:3}
+.brand{display:flex;align-items:center;gap:12px;font-weight:900;letter-spacing:.5px;font-size:20px}
+.logo{width:40px;height:40px;border:1px solid var(--red);border-radius:12px;display:grid;place-items:center;color:var(--red2);font-size:22px;box-shadow:var(--glow)}
+.brand span{color:var(--red2)}
+.status{font-size:12px;color:#70e68d;border:1px solid #236b39;border-radius:30px;padding:8px 12px}
+main{max-width:1100px;margin:auto;padding:48px 22px 30px}
+.hero{text-align:center;margin-bottom:30px}
+.eyebrow{color:var(--red2);font-size:12px;letter-spacing:4px;font-weight:800}
+h1{font-size:clamp(35px,7vw,66px);line-height:1.02;margin:12px 0 8px;letter-spacing:-2px}
+h1 span{color:var(--red2);text-shadow:0 0 25px #ff174455}
+.subtitle{color:var(--muted);margin:0}
+.layout{display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:stretch}
+.card{background:linear-gradient(145deg,rgba(25,13,15,.96),rgba(10,10,10,.98));border:1px solid var(--line);border-radius:22px;padding:28px;box-shadow:var(--glow);position:relative;overflow:hidden}
+.card:before{content:"";position:absolute;inset:0 0 auto;height:2px;background:linear-gradient(90deg,transparent,var(--red2),transparent)}
+.card h2{margin:0 0 8px;font-size:25px}
+.muted{color:var(--muted);font-size:14px}
+.field{margin-top:20px}
+label{display:block;font-size:13px;color:#ddd;margin-bottom:8px}
+input{width:100%;padding:15px 16px;border-radius:12px;border:1px solid #573039;background:#080808;color:white;outline:none}
+input:focus{border-color:var(--red2);box-shadow:0 0 0 3px #ff174422}
+.btn{width:100%;border:0;border-radius:13px;padding:15px 18px;margin-top:20px;background:linear-gradient(100deg,#a90024,var(--red2));color:white;font-weight:800;box-shadow:0 7px 25px #e3263640;cursor:pointer}
+.btn.secondary{background:#171010;border:1px solid var(--red);box-shadow:none}
+.btn:hover{filter:brightness(1.15)}
+.note{font-size:12px;color:#aaa;line-height:1.5;margin-top:15px}
+.features{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:22px}
+.feature{padding:16px;border:1px solid #49212a;border-radius:14px;background:#0b090a}
+.icon{font-size:22px;color:var(--red2)}
+.feature b{display:block;margin:7px 0 3px;font-size:14px}
+.feature small{color:var(--muted)}
+.preview-label{display:inline-block;border:1px solid var(--deep);color:#ff7a8c;border-radius:20px;padding:6px 10px;font-size:11px;letter-spacing:1px;margin-bottom:16px}
+.dashboard{display:none;margin-top:22px}
+.dash-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:20px 0}
+.stat{background:#100b0d;border:1px solid #54202c;border-radius:14px;padding:16px}
+.stat strong{font-size:24px;color:var(--red2);display:block}
+.stat small{color:var(--muted)}
+.vault-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.vault-item{background:#0b090a;border:1px solid #49212a;border-radius:14px;padding:18px;text-align:center}
+.vault-item span{font-size:26px}
+.vault-item b{display:block;margin-top:8px;font-size:13px}
+footer{text-align:center;color:#777;font-size:12px;padding:28px 10px}
+@media(max-width:760px){.layout{grid-template-columns:1fr}main{padding:32px 15px}.card{padding:22px}.stats{grid-template-columns:1fr 1fr}.vault-grid{grid-template-columns:1fr 1fr}.topbar{padding:0 16px}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><div class="logo">♛</div><div>PREM <span>X JARVIS</span><div style="font-size:10px;color:#999;font-weight:500;letter-spacing:2px">PERSONAL PRIVATE VAULT</div></div></div>
+  <div class="status">● SYSTEM ONLINE</div>
+</header>
+<main>
+  <section class="hero">
+    <div class="eyebrow">PRIVATE • PERSONAL • PROTECTED</div>
+    <h1>YOUR DATA.<br><span>YOUR CONTROL.</span></h1>
+    <p class="subtitle">A private space for notes, files and memories.</p>
+  </section>
+
+  <section class="layout" id="loginArea">
+    <div class="card">
+      <div class="preview-label">CRIMSON BLACK THEME</div>
+      <h2>Welcome Back</h2>
+      <p class="muted">Sign in to your personal vault.</p>
+      <div class="field"><label>Email or username</label><input id="email" type="text" placeholder="Enter email or username" autocomplete="off"></div>
+      <div class="field"><label>Password</label><input id="password" type="password" placeholder="Enter password" autocomplete="off"></div>
+      <button class="btn" onclick="showDemo()">LOGIN TO PREVIEW →</button>
+      <button class="btn secondary" onclick="showDemo()">CREATE ACCOUNT</button>
+      <p class="note">⚠️ Preview only: this demo does not create accounts, save credentials, or connect to Supabase. Never enter a real password here.</p>
+    </div>
+    <div class="card">
+      <div class="preview-label">VAULT FEATURES</div>
+      <h2>One place. Your private world.</h2>
+      <p class="muted">Designed for simple, secure access across your devices.</p>
+      <div class="features">
+        <div class="feature"><div class="icon">🔐</div><b>Private Login</b><small>Account-based access</small></div>
+        <div class="feature"><div class="icon">📝</div><b>Personal Notes</b><small>Keep important notes</small></div>
+        <div class="feature"><div class="icon">📁</div><b>File Storage</b><small>Documents and photos</small></div>
+        <div class="feature"><div class="icon">📱</div><b>Any Device</b><small>Responsive layout</small></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="card dashboard" id="dashboard">
+    <div class="dash-head"><div><div class="preview-label">DASHBOARD PREVIEW</div><h2>Welcome, Commander</h2><p class="muted">Your vault overview</p></div><button class="btn secondary" style="width:auto;margin:0;padding:11px 16px" onclick="backToLogin()">← Back to login</button></div>
+    <div class="stats">
+      <div class="stat"><strong>00</strong><small>Saved notes</small></div>
+      <div class="stat"><strong>00</strong><small>Stored files</small></div>
+      <div class="stat"><strong>ON</strong><small>Theme status</small></div>
+    </div>
+    <div class="vault-grid">
+      <div class="vault-item"><span>📝</span><b>My Notes</b></div>
+      <div class="vault-item"><span>📂</span><b>My Files</b></div>
+      <div class="vault-item"><span>🔒</span><b>Security</b></div>
+      <div class="vault-item"><span>🖼️</span><b>Photos</b></div>
+      <div class="vault-item"><span>⚙️</span><b>Settings</b></div>
+      <div class="vault-item"><span>＋</span><b>Add New</b></div>
+    </div>
+    <p class="note">This is a visual dashboard preview with sample counters only. No personal data is stored.</p>
+  </section>
+</main>
+<footer>© 2026 PREM X JARVIS · BUILD · SECURE · GROW</footer>
+<script>
+function showDemo(){
+  document.getElementById('loginArea').style.display='none';
+  document.getElementById('dashboard').style.display='block';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function backToLogin(){
+  document.getElementById('dashboard').style.display='none';
+  document.getElementById('loginArea').style.display='grid';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>
