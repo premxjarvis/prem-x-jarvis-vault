@@ -363,11 +363,12 @@
 
     // IMPORTANT: USER ID REQUIRED FOR RLS
     const payload = {
-      user_id: user.id,
-      title,
-      content,
-      updated_at: new Date().toISOString()
-    };
+  user_id: user.id,
+  title,
+  body: content,
+  content: content,
+  updated_at: new Date().toISOString()
+};
 
     const result = editingId
       ? await client
