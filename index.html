@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#050505">
+<title>PREM X JARVIS — ULTIMATE PRIVATE VAULT</title>
+<link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+<div class="ambient"></div>
+<header class="topbar">
+  <a class="brand" href="#"><span class="brand-mark">J</span><span>PREM <b>X</b> JARVIS<small>ULTIMATE PRIVATE VAULT</small></span></a>
+  <span class="secure-pill"><i></i> PRIVATE SPACE</span>
+</header>
+<main class="shell">
+<section id="authView" class="auth-layout">
+  <div class="intro"><div class="eyebrow">YOUR SPACE. YOUR CONTROL.</div>
+    <h1>Your personal<br><em>digital vault.</em></h1>
+    <p>One private space for notes, files, ideas and personal records — across your devices.</p>
+    <div class="feature-line"><span>01</span> PRIVATE STORAGE <span class="dot">•</span> <span>02</span> SECURE SIGN-IN</div>
+  </div>
+  <div class="panel auth-panel">
+    <div class="tabs"><button class="tab active" id="loginTab" type="button">LOGIN</button><button class="tab" id="signupTab" type="button">CREATE ACCOUNT</button></div>
+    <div id="authForm">
+      <div class="panel-kicker">WELCOME BACK</div><h2 id="formTitle">Access your vault</h2>
+      <p class="subtext" id="formDescription">Sign in to continue to your private space.</p>
+      <label for="email">EMAIL ADDRESS</label><input id="email" type="email" placeholder="you@example.com" autocomplete="email">
+      <label for="password">PASSWORD</label><input id="password" type="password" placeholder="Enter password" autocomplete="current-password">
+      <div id="confirmWrap" class="hidden"><label for="confirmPassword">CONFIRM PASSWORD</label><input id="confirmPassword" type="password" placeholder="Re-enter password" autocomplete="new-password"></div>
+      <button class="primary" id="submitAuth" type="button">LOGIN TO VAULT <span>↗</span></button>
+      <button class="text-button" id="forgotButton" type="button">Forgot password?</button>
+      <div class="divider"><span>SECURE ACCESS</span></div><p class="micro">Never share your password or verification code.</p>
+    </div>
+    <div id="otpView" class="hidden">
+      <div class="panel-kicker">EMAIL VERIFICATION</div><h2>Verify your email</h2>
+      <p class="subtext">Enter the 6-digit code sent to <strong id="otpEmail"></strong>.</p>
+      <div class="otp-grid" id="otpGrid"><input inputmode="numeric" maxlength="1"><input inputmode="numeric" maxlength="1"><input inputmode="numeric" maxlength="1"><input inputmode="numeric" maxlength="1"><input inputmode="numeric" maxlength="1"><input inputmode="numeric" maxlength="1"></div>
+      <button class="primary" id="verifyOtp" type="button">VERIFY EMAIL <span>↗</span></button>
+      <button class="text-button" id="resendOtp" type="button">Resend code</button><button class="back-button" id="backToAuth" type="button">← Back to sign in</button>
+    </div>
+    <div id="message" class="message" role="status" aria-live="polite"></div>
+  </div>
+</section>
+
+<section id="vaultView" class="hidden">
+  <div class="vault-heading">
+    <div><div class="eyebrow">SYSTEM ONLINE</div><h1>Welcome to <em>Vault</em></h1><p class="subtext" id="userLabel">Your private space is ready.</p></div>
+    <button class="outline-button" id="logoutButton">LOG OUT ↗</button>
+  </div>
+
+  <div class="dash-tools">
+    <input id="globalSearch" type="search" placeholder="Search your vault..." aria-label="Search vault">
+    <button class="outline-button" id="calculatorCover" type="button">⌗ QUICK CALCULATOR</button>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat-card"><span>ITEMS</span><b id="itemTotal">0</b></div>
+    <div class="stat-card"><span>FAVORITES</span><b id="favoriteTotal">0</b></div>
+    <div class="stat-card"><span>TRASH</span><b id="trashTotal">0</b></div>
+  </div>
+
+  <div class="section-title"><div><div class="panel-kicker">YOUR PRIVATE SPACE</div><h2>Vault dashboard</h2></div><span class="tiny-label">CRIMSON BLACK EDITION</span></div>
+  <nav class="module-grid" id="moduleGrid" aria-label="Vault sections">
+    <button class="module active" data-category="Notes"><span>📝</span><b>Private Notes</b><small>Personal writing</small></button>
+    <button class="module" data-category="Gallery"><span>🖼️</span><b>Private Gallery</b><small>Photos & images</small></button>
+    <button class="module" data-category="Videos"><span>🎞️</span><b>Private Videos</b><small>Video files</small></button>
+    <button class="module" data-category="Files"><span>📁</span><b>File Vault</b><small>PDF & documents</small></button>
+    <button class="module" data-category="Passwords"><span>🔑</span><b>Password Vault</b><small>Encrypted entries</small></button>
+    <button class="module" data-category="Diary"><span>📔</span><b>Secret Diary</b><small>Private journal</small></button>
+    <button class="module" data-category="Contacts"><span>👤</span><b>Private Contacts</b><small>Personal records</small></button>
+    <button class="module" data-category="Bookmarks"><span>🌐</span><b>Bookmarks</b><small>Saved links</small></button>
+    <button class="module" data-category="Ideas"><span>💡</span><b>Ideas & Goals</b><small>Plans and thoughts</small></button>
+    <button class="module" data-category="Favorites"><span>⭐</span><b>Favorites</b><small>Starred items</small></button>
+    <button class="module" data-category="Trash"><span>🗑️</span><b>Recycle Bin</b><small>Restore deleted items</small></button>
+    <button class="module" data-category="All"><span>🔎</span><b>All Items</b><small>Browse everything</small></button>
+  </nav>
+
+  <div class="content-layout">
+    <section class="panel item-editor">
+      <div class="panel-kicker" id="editorKicker">PRIVATE NOTES</div><h2 id="editorTitle">Create a note</h2>
+      <label for="itemTitle">TITLE</label><input id="itemTitle" maxlength="140" placeholder="Give this item a title">
+      <label for="itemBody" id="bodyLabel">YOUR NOTE</label><textarea id="itemBody" rows="6" placeholder="Write something you want to keep private..."></textarea>
+      <div id="passwordFields" class="hidden">
+        <label for="secretValue">SECRET VALUE</label><input id="secretValue" type="password" autocomplete="off" placeholder="Password / secret">
+        <label for="vaultPassphrase">VAULT PASSPHRASE</label><input id="vaultPassphrase" type="password" autocomplete="off" placeholder="Used to encrypt and decrypt this entry">
+        <p class="hint">Password entries are encrypted in your browser before saving. If you forget this passphrase, the entry cannot be decrypted.</p>
+      </div>
+      <div id="fileFields" class="hidden"><label for="vaultFile">SELECT FILE</label><input id="vaultFile" type="file"><p class="hint">Private file storage requires the SQL setup and private bucket included in the package.</p></div>
+      <label for="itemFolder">FOLDER / CATEGORY</label><input id="itemFolder" maxlength="60" placeholder="e.g. Personal, School, Work">
+      <button class="primary" id="saveItem" type="button">SAVE ITEM <span>＋</span></button>
+      <button class="text-button hidden" id="cancelEdit" type="button">Cancel editing</button>
+      <div class="message" id="actionMessage" role="status"></div>
+    </section>
+
+    <section class="panel collection-panel">
+      <div class="list-head"><div><div class="panel-kicker" id="collectionKicker">YOUR COLLECTION</div><h2 id="collectionTitle">Private Notes</h2></div><span class="count" id="collectionCount">0</span></div>
+      <div class="filter-row"><input id="folderFilter" placeholder="Filter by folder"><select id="sortItems" aria-label="Sort items"><option value="new">Newest first</option><option value="old">Oldest first</option><option value="az">Title A–Z</option></select></div>
+      <div id="itemsContainer" class="items-container"><div class="empty">Your private items will appear here.</div></div>
+    </section>
+  </div>
+
+  <section class="panel extra-panel">
+    <div class="section-title"><div><div class="panel-kicker">ACCOUNT & SECURITY</div><h2>Vault controls</h2></div></div>
+    <div class="control-grid">
+      <div class="control-card"><b>🔒 Auto-lock</b><p>Locks this page after inactivity. This is a screen lock, not a replacement for account security.</p><button id="autoLockToggle" class="small-button">Enable 2-minute lock</button></div>
+      <div class="control-card"><b>📱 Device sessions</b><p>Sign out this device. Full session inventory and remote revoke need a trusted backend.</p><button id="signOutDevice" class="small-button">Sign out this device</button></div>
+      <div class="control-card"><b>🧮 Calculator cover</b><p>A visual calculator screen only. It does not hide data or provide security.</p><button id="openCalculator" class="small-button">Open calculator</button></div>
+      <div class="control-card"><b>🛟 Recovery</b><p>Use Supabase email password recovery. Keep your email account secure.</p><button id="recoveryButton" class="small-button">Send recovery email</button></div>
+      <div class="control-card"><b>👆 Biometric unlock</b><p>Not enabled in this version. It requires WebAuthn/passkey setup and device testing.</p><span class="status-tag">NOT CONFIGURED</span></div>
+      <div class="control-card"><b>⭐ Favorites & folders</b><p>Star any item and group records with a folder name.</p><span class="status-tag">AVAILABLE</span></div>
+    </div>
+  </section>
+  <p class="security-foot">🔐 Keep Supabase Row Level Security enabled. Do not store highly sensitive information until you have tested the setup and recovery process.</p>
+</section>
+</main>
+
+<div id="lockScreen" class="modal hidden"><div class="panel modal-card"><div class="panel-kicker">AUTO LOCK</div><h2>Vault paused</h2><p class="subtext">Tap unlock to return to your signed-in page.</p><button class="primary" id="unlockButton">UNLOCK SCREEN</button></div></div>
+<div id="calculatorScreen" class="modal hidden"><div class="panel modal-card"><div class="modal-head"><div><div class="panel-kicker">QUICK TOOL</div><h2>Calculator</h2></div><button class="outline-button" id="closeCalculator">CLOSE</button></div><input id="calcDisplay" readonly value="0"><div class="calc-grid"><button data-calc="7">7</button><button data-calc="8">8</button><button data-calc="9">9</button><button data-calc="/">÷</button><button data-calc="4">4</button><button data-calc="5">5</button><button data-calc="6">6</button><button data-calc="*">×</button><button data-calc="1">1</button><button data-calc="2">2</button><button data-calc="3">3</button><button data-calc="-">−</button><button data-calc="0">0</button><button data-calc=".">.</button><button data-calc="clear">C</button><button data-calc="+">+</button><button data-calc="=" class="equals">=</button></div></div></div>
+<footer>PREM X JARVIS <span>•</span> PRIVATE BY DESIGN</footer>
+<script src="config.js"></script><script src="app.js"></script>
+</body></html>
